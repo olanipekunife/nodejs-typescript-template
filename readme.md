@@ -1,6 +1,4 @@
-# Bank Employee API _(Typescript)_
-
-Enable account to account transfers, account creation, transaction history, balances
+# Nodejs Typescript Template
 
 ## Features
 
