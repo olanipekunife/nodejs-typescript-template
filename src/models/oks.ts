@@ -1,14 +1,15 @@
 import { mainConnection } from "../connection";
 
 import { Schema } from "mongoose";
-const collection = "Samples";
-import ISample from "../interfaces/sample";
+const collection = 'Oks';
+import IOk from "../interfaces/oks";
+import logging from "../services/logger";
 
 const schemaObject = {
   // ++++++++++++++ Modify to your own schema ++++++++++++++++++
-  sample: {
+  name: {
     type: "String",
-    unique: true,
+   // unique: true,
     required: true,
     uppercase: true,
   },
@@ -19,10 +20,14 @@ const schemaObject = {
 // Let us define our schema
 const schema: Schema = new Schema(schemaObject, { timestamps: true });
 
-schema.pre<ISample>("save", function (next) {
+schema.pre<IOk>("save", function (next) {
   next();
 });
 
-const model = mainConnection.model<ISample>(collection, schema);
+schema.post<IOk>("save", function () {
+  logging.debug("Mongo", "Checkout the ok we just saved: ", this);
+});
+
+const model = mainConnection.model<IOk>(collection, schema);
 
 export default model;

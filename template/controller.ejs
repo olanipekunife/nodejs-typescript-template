@@ -1,0 +1,263 @@
+import <%= service %>s from '../models/<%= service %>s';
+import q from 'q' 
+
+interface IControllers {
+    find: (req:any,res:any,next:any) => void;
+    findOne: (req:any,res:any,next:any) => void;
+    create: (req:any,res:any,next:any) => void;
+    update: (req:any,res:any,next:any) => void;
+    updateOne: (req:any,res:any,next:any) => void;
+    deleteOne: (req:any,res:any,next:any) => void;
+  }
+
+const <%= service %>sController = <IControllers> {};
+
+
+<%= service %>sController.find = async(req,res,next)=>{
+  try{
+
+
+       const query = req.query;
+       
+        const select = query.select; // Projection should be space separated. eg. name location
+        
+        if(select){
+            delete query.select;
+        }
+
+        const limit = query.limit * 1 || 50;
+
+        if (limit) {
+            delete query.limit;
+        }
+
+        const skip = query.skip * 1 || 0;
+
+        if (skip >= 0) {
+            delete query.skip;
+        }
+
+        const sort = query.sort; // -fieldName: means descending while fieldName without the minus mean ascending bith by fieldName. eg, '-fieldName1 fieldName2'
+
+        if(sort){
+            delete query.sort;
+        }
+
+        let populate = query.populate; // Samples: 'name location' will populate name and location references. only supports this for now | 
+        //to support deep populate e.g populating account under name -> name.account
+
+        if(populate){
+            delete query.populate;
+        }
+
+        const from = query.from;
+
+        let to = query.to;
+
+        if(from){
+            query.createdAt = {};
+            query.createdAt.$gte = from;
+            delete query.from;
+            if(to){
+                delete query.to;
+            }else{
+                to = new Date().toISOString();
+            }
+            query.createdAt.$lte = to;
+        }
+      
+        let totalResult = <%= service %>s.countDocuments(query);
+        const total = <%= service %>s.countDocuments(query);
+        let question = <%= service %>s.find(query);
+
+if(skip !== 0){
+ question = question.skip(skip)
+}
+       
+if(limit !== -1 || from != null){
+      totalResult = totalResult.limit(limit);
+        question = question.limit(limit);
+}
+
+        if(sort){
+            question = question.sort(sort);
+        }
+
+       if (populate) {
+           //loan.product
+           //support deep populate 
+            populate.split(' ').map((p,i)=>{
+                if(i===0)populate = []
+                                    if(p.includes('.')){
+                             const chk =       populate.findIndex(x => x.path === p.split('.')[0])
+                if(chk >-1){
+                populate[chk].populate.push({path:p.split('.')[1]})
+                }else{
+                                        populate.push({
+                                            path:p.split('.')[0],
+                                            populate:[{path:p.split('.')[1]}]
+                                        })
+                                        }
+                                    }else{
+                                        populate.push({
+                                            path:p
+                                        })
+                                    }
+                                })
+            question = question.populate(populate);
+        }
+        if(select){
+            question = question.select(select);
+        }
+
+        //lean!
+      question = question.lean()
+            q.all([question,total,totalResult])
+            .spread(function(resp,total,totalResult){
+                const pages = Math.ceil(total / limit)
+                    const remainingPages = Math.ceil((total - (totalResult + skip)) / limit)
+                    totalResult = totalResult + skip
+
+                    const extraData : {
+                        limit ?: number;
+                        total ?: number;
+                        totalResult ?: number;
+                        skip ?: number;
+                        pages ?: number;
+                        currentPage ?: number;
+                        isLastPage ?: boolean;
+                      } = {};
+                    extraData.limit = limit * 1;
+                    extraData.total = total;
+                    extraData.totalResult = totalResult > total ? total : totalResult;
+                    extraData.skip = skip;
+                    extraData.pages = pages;
+                    extraData.currentPage = pages - remainingPages;
+
+                    extraData.isLastPage = (totalResult >= total) ? true : false;
+                res.ok(resp, false, extraData);
+            })
+            .catch(function(err){
+                next(err);
+            });
+        
+
+    }catch(error){
+        next(error)
+    }
+};
+
+<%= service %>sController.findOne = async (req,res,next)=>{
+    try{
+
+    const id = req.params.id;
+    const query = req.query;
+    let populate;
+    if(query){
+       
+        const populate = query.populate; // Samples: 'name location' will populate name and location references. only supports this for now | 
+        //to support deep populate e.g populating account under name -> name.account
+    }
+
+    let question = <%= service %>s.findById(id);
+
+    if(populate){
+        delete query.populate;
+        populate.split(' ').map((p,i)=>{
+            if(i===0)populate = []
+                                if(p.includes('.')){
+                         const chk =       populate.findIndex(x => x.path === p.split('.')[0])
+            if(chk >-1){
+            populate[chk].populate.push({path:p.split('.')[1]})
+            }else{
+                                    populate.push({
+                                        path:p.split('.')[0],
+                                        populate:[{path:p.split('.')[1]}]
+                                    })
+                                    }
+                                }else{
+                                    populate.push({
+                                        path:p
+                                    })
+                                }
+                            })
+        question = question.populate(populate);
+    }
+
+   const resp = await question
+       res.ok(resp);
+   
+    
+}catch(error){
+    next(error)
+}
+};
+
+<%= service %>sController.create = async (req,res,next) => {
+    try{
+
+        const data  = req.body;
+   
+   const resp = await <%= service %>s.create(data)
+        res.ok(resp);
+  
+       
+    }catch(error){
+        next(error);      
+    }
+   
+};
+
+<%= service %>sController.update = async (req,res,next)=>{
+
+    try{
+
+        const query = req.query;
+   
+        const data  = req.body;
+      
+      const resp = await  <%= service %>s.updateMany(query,data)
+            res.ok(resp);
+       
+    }catch(error){
+        next(error);      
+    }
+   
+};
+
+<%= service %>sController.updateOne = async (req,res,next)=>{
+    try{
+
+ 
+    const id = req.params.id;
+    const data  = req.body;
+   
+    
+   const resp = await <%= service %>s.findByIdAndUpdate(id,data)
+   if(!resp){
+    next();
+}else{
+    res.ok(resp);
+}
+}catch(error){
+    next(error);      
+}
+};
+
+<%= service %>sController.deleteOne = async (req,res,next)=>{
+    try{
+
+    const id = req.params.id;
+
+    if(!id) throw{message:'Id parameter not found'}
+
+   const resp = await <%= service %>s.deleteOne(id)
+   
+   res.ok(resp);
+
+}catch(error){
+    next(error);   
+}
+};
+
+export default <%= service %>sController;

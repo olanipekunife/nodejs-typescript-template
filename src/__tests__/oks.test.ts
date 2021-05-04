@@ -17,7 +17,7 @@ beforeAll(async (done) => {
   done();
 });
 
-describe("Customers", () => {
+describe("oks", () => {
   it("should be true", () => {
     //   const response = await deletes(app, `/api/`, `Bearer ${token}`)
     //   .expect(200);

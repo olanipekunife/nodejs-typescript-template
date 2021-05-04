@@ -1,0 +1,6 @@
+import { Document } from "mongoose";
+
+export default interface I<%= service.charAt(0).toUpperCase() + service.slice(1) %>s extends Document {
+  name: string;
+  [key:string]:any
+}
