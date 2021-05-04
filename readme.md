@@ -1,5 +1,51 @@
 # Nodejs Typescript Template
 
+## Installation
+
+it requires [Node.js](https://nodejs.org/) v10+ to run.
+
+Install the dependencies and devDependencies and start the server.
+
+```sh
+cd [project_dir]
+yarn install
+yarn start:dev
+yarn start:devworkers
+```
+
+For production environments...
+
+```sh
+yarn install --production
+NODE_ENV=production yarn start
+NODE_ENV=production yarn start:worker
+```
+
+## Running with Docker
+
+```sh
+run `docker-compose build && docker-compose up -d` to get it up and running
+```
+
+## Generate your first API endpoint
+
+```
+$ gulp service --name yourFirstEndpoint // This command will create a CRUD endpoint for yourFirstEndpoint.
+```
+
+- `[POST] http://localhost:8080/yourFirstEndpoint` Create yourFirstEndpoint resources
+- `[GET] http://localhost:8080/yourFirstEndpoint` Get yourFirstEndpoint resources. Supports limits, sorting, pagination, select (projection), search and date range
+- `[GET] http://localhost:8080/yourFirstEndpoint/:id` Get a yourFirstEndpoint resource
+- `[PUT] http://localhost:8080/yourFirstEndpoint` Update yourFirstEndpoint resources
+- `[PATCH] http://localhost:8080/yourFirstEndpoint/:id` Update one yourFirstEndpoint resource
+- `[DELETE] http://localhost:8080/yourFirstEndpoint/:id` Delete one yourFirstEndpoint resource
+
+## Versioning your API endpoints
+
+You can create multiple versions of your API endpoints by simply adding the version number to your route file name. eg. `users.v1.js` will put a version of the users resources on the `/v1/users` endpoint. users.v2.js will put a version of the users resources on the `/v2/users` endpoint. The latest version of the resources will always be available at the `/users` endpoint.
+
+> NOTE: This project will automatically load route files found in the routes folder.
+
 ## Features
 
 - Custom Error Handlers
@@ -69,31 +115,4 @@ bearer authorization header also need to be passed
 
 ```sh
 A custom request library was created under `./src/services/request`, which allows all request made to external APIs to be logged or be recalled if duplicate
-```
-
-## Installation
-
-it requires [Node.js](https://nodejs.org/) v10+ to run.
-
-Install the dependencies and devDependencies and start the server.
-
-```sh
-cd [project_dir]
-yarn install
-yarn start:dev
-yarn start:devworkers
-```
-
-For production environments...
-
-```sh
-yarn install --production
-NODE_ENV=production yarn start
-NODE_ENV=production yarn start:worker
-```
-
-## Running with Docker
-
-```sh
-run `docker-compose build && docker-compose up -d` to get it up and running
 ```
