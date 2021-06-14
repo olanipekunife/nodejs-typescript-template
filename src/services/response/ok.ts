@@ -23,6 +23,9 @@ const res = this
     }
 
     response.requestId = req.requestId;
+   
+           queue.add('logResponse', response)
+
     // Encrypt response here
   
         log.info('Sending ok response: ', response.response);
@@ -51,8 +54,7 @@ const res = this
         } else {
             return res.status(200).json(response.response);
         }
-    
+
         return res.status(200).json(response.response);
-    queue.add('logResponse', response)
 
 };
