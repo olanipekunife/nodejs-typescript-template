@@ -7,6 +7,13 @@ const config = {
   logglyTag: process.env.LOGGLY_TAG || false,
   mongoURL: process.env.MONGOLAB_URL || "mongodb://127.0.0.1/sample",
   logMongoURL: process.env.LOG_MONGOLAB_URL || "mongodb://127.0.0.1/sampleLogs",
+  SQLUsername: process.env.SQL_USERNAME || "root",
+  SQLPassword: process.env.SQL_PASSWORD || "mysql",
+  SQLDatabase: process.env.SQL_DATABASE || "sample",
+  SQLHost: process.env.SQL_HOST || "127.0.0.1",
+  SQLPort: process.env.SQL_PORT || 3306,
+  SQLDriver: process.env.SQL_DRIVER || "mysql", //'mysql'|'sqlite'|'postgres'|'mssql'
+  SQLTimezone: process.env.SQL_TIMEZONE || "+01:00",
   noFrontendCaching: process.env.NO_CACHE || "yes",
   frontendCacheExpiry: process.env.FRONTEND_CACHE_EXPIRY || "90",
   backendCacheExpiry: process.env.BACKEND_CACHE_EXPIRY || "90",
