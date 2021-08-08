@@ -28,6 +28,8 @@ gulp.task("service", function (done) {
     endpoint = args.e;
   }
 
+  isSQL = args.sql;
+
   if (!endpoint) {
     endpoint = args.e;
   }
@@ -61,38 +63,49 @@ gulp.task("service", function (done) {
       }
     );
   });
-  renderFile("./template/model.ejs", { service: name }, (err, rendered) => {
-    if (err) throw err;
-
-    fs.writeFile(
-      "./src/models/" + namePlural + ".ts",
-      rendered,
-      function (err) {
-        if (err) {
-          throw err;
-        }
-        console.log("Model created at ./models/" + namePlural + ".ts");
-      }
-    );
-  });
-
-  renderFile("./template/interface.ejs", { service: name }, (err, rendered) => {
-    if (err) throw err;
-
-    fs.writeFile(
-      "./src/interfaces/" + namePlural + ".ts",
-      rendered,
-      function (err) {
-        if (err) {
-          throw err;
-        }
-        console.log("interface created at ./interfaces/" + namePlural + ".ts");
-      }
-    );
-  });
-
   renderFile(
-    "./template/controller.ejs",
+    isSQL ? "./template/model_sql.ejs" : "./template/model.ejs",
+    { service: name },
+    (err, rendered) => {
+      if (err) throw err;
+
+      fs.writeFile(
+        "./src/models/" + namePlural + ".ts",
+        rendered,
+        function (err) {
+          if (err) {
+            throw err;
+          }
+          console.log("Model created at ./models/" + namePlural + ".ts");
+        }
+      );
+    }
+  );
+
+  if (!isSQL) {
+    renderFile(
+      "./template/interface.ejs",
+      { service: name },
+      (err, rendered) => {
+        if (err) throw err;
+
+        fs.writeFile(
+          "./src/interfaces/" + namePlural + ".ts",
+          rendered,
+          function (err) {
+            if (err) {
+              throw err;
+            }
+            console.log(
+              "interface created at ./interfaces/" + namePlural + ".ts"
+            );
+          }
+        );
+      }
+    );
+  }
+  renderFile(
+    isSQL ? "./template/controller_sql.ejs" : "./template/controller.ejs",
     { service: name },
     (err, rendered) => {
       if (err) throw err;

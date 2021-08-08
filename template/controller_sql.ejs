@@ -1,0 +1,124 @@
+import <%= service %>s from '../models/<%= service %>s';
+import q from 'q' 
+
+interface IControllers {
+    find: (req:any,res:any,next:any) => void;
+    findOne: (req:any,res:any,next:any) => void;
+    create: (req:any,res:any,next:any) => void;
+    update: (req:any,res:any,next:any) => void;
+    updateOne: (req:any,res:any,next:any) => void;
+    deleteOne: (req:any,res:any,next:any) => void;
+  }
+
+const <%= service %>sController = <IControllers> {};
+
+
+<%= service %>sController.find = async(req,res,next)=>{
+  try{
+
+
+   const data = await <%= service %>s.findAll();
+   
+   res.ok(data)
+
+    }catch(error){
+        next(error)
+    }
+};
+
+<%= service %>sController.findOne = async (req,res,next)=>{
+    try{
+
+    const id = req.params.id;
+
+     const data = await <%= service %>s.findAll({
+        where: {
+          _id: id
+        }
+      });
+    
+      res.ok(data)
+
+}catch(error){
+    next(error)
+}
+};
+
+<%= service %>sController.create = async (req,res,next) => {
+    try{
+
+        const data  = req.body;
+   
+   const resp = await <%= service %>s.create(data)
+        res.ok(resp);
+  
+       
+    }catch(error){
+        next(error);      
+    }
+   
+};
+
+<%= service %>sController.update = async (req,res,next)=>{
+
+    try{
+
+        const query = req.query;
+   
+        const data  = req.body;
+      
+        const resp =   await <%= service %>s.update(data, {
+            where: query
+          });
+            res.ok(resp);
+       
+    }catch(error){
+        next(error);      
+    }
+   
+};
+
+<%= service %>sController.updateOne = async (req,res,next)=>{
+    try{
+
+ 
+    const id = req.params.id;
+    const data  = req.body;
+   
+    
+    const resp =   await <%= service %>s.update(data, {
+        where: {
+          _id:     const id = req.params.id;
+
+        }
+      });
+ 
+    res.ok(resp);
+
+}catch(error){
+    next(error);      
+}
+};
+
+<%= service %>sController.deleteOne = async (req,res,next)=>{
+    try{
+
+    const id = req.params.id;
+
+    if(!id) throw{message:'Id parameter not found'}
+
+    const resp = await User.destroy({
+        where: {
+          _id: id
+        }
+      });
+
+   
+   res.ok(resp);
+
+}catch(error){
+    next(error);   
+}
+};
+
+export default <%= service %>sController;

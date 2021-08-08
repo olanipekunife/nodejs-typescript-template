@@ -1,0 +1,76 @@
+
+
+
+import sqlConnection from "../connection/sql";
+
+const table = '<%= service.charAt(0).toUpperCase() + service.slice(1) %>s';
+import logging from "../services/logger";
+const { DataTypes } = require("sequelize"); 
+
+
+// Define schema
+var schemaObject = {
+    // ++++++++++++++ Modify to your own schema ++++++++++++++++++
+    name: {
+        type: DataTypes.STRING
+    },
+    someOtherStringData: {
+        type: DataTypes.STRING
+    },
+    // ++++++++++++++ Modify to your own schema ++++++++++++++++++
+};
+
+
+
+schemaObject._id = {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+};
+
+
+// Define the table
+const table = sqlConnection.define(table, schemaObject, {
+    // Don't really delete data
+    // paranoid: true,
+    // define indexes here
+   
+    {
+        unique: true,
+        fields:['_id']
+    }]
+});
+
+table.associate = function (models) {
+    // models.<%= service %>s.belongsTo(models.toPop, { foreignKey: 'toPop', sourceKey: '_id' });
+};
+
+// table.hasMany(<%= service %>s, {foreignKey: 'toPop', sourceKey: '_id'});
+
+// Adding hooks
+tableafterCreate(function(user, options) {
+    // Indexing for search
+    // var ourDoc = user.dataValues;
+    // ourDoc.isSQL = true;
+    // ourDoc.model = table;
+
+    // Dump it in the queue
+    //  queue.create('searchIndex', ourDoc)
+    //  .save();
+});
+
+table.search = function(string){
+    return <%= service %>s.findAll({
+        where: {
+            tags: {
+                $like: '%'+string
+            }
+        }
+    });
+};
+
+table.sync();
+
+
+export default table;
+
