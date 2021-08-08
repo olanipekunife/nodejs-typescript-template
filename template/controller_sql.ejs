@@ -1,4 +1,4 @@
-import <%= service %>s from '../models/<%= service %>s';
+import <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %> from '../models/<%= service %>s';
 import q from 'q' 
 
 interface IControllers {
@@ -17,7 +17,7 @@ const <%= service %>sController = <IControllers> {};
   try{
 
 
-   const data = await <%= service %>s.findAll();
+   const data = await <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>.findAll();
    
    res.ok(data)
 
@@ -31,7 +31,7 @@ const <%= service %>sController = <IControllers> {};
 
     const id = req.params.id;
 
-     const data = await <%= service %>s.findAll({
+     const data = await <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>.findAll({
         where: {
           _id: id
         }
@@ -49,7 +49,7 @@ const <%= service %>sController = <IControllers> {};
 
         const data  = req.body;
    
-   const resp = await <%= service %>s.create(data)
+   const resp = await <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>.create(data)
         res.ok(resp);
   
        
@@ -67,7 +67,7 @@ const <%= service %>sController = <IControllers> {};
    
         const data  = req.body;
       
-        const resp =   await <%= service %>s.update(data, {
+        const resp =   await <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>.update(data, {
             where: query
           });
             res.ok(resp);
@@ -86,7 +86,7 @@ const <%= service %>sController = <IControllers> {};
     const data  = req.body;
    
     
-    const resp =   await <%= service %>s.update(data, {
+    const resp =   await <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>.update(data, {
         where: {
           _id:     const id = req.params.id;
 
@@ -107,7 +107,7 @@ const <%= service %>sController = <IControllers> {};
 
     if(!id) throw{message:'Id parameter not found'}
 
-    const resp = await User.destroy({
+    const resp = await <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>..destroy({
         where: {
           _id: id
         }

@@ -5,12 +5,18 @@ import sqlConnection from "../connection/sql";
 
 const table = '<%= service.charAt(0).toUpperCase() + service.slice(1) %>s';
 import logging from "../services/logger";
-const { DataTypes } = require("sequelize"); 
+import { DataTypes }  from "sequelize";
+
 
 
 // Define schema
-var schemaObject = {
+const schemaObject = {
     // ++++++++++++++ Modify to your own schema ++++++++++++++++++
+    _id :{
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     name: {
         type: DataTypes.STRING
     },
@@ -22,33 +28,25 @@ var schemaObject = {
 
 
 
-schemaObject._id = {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-};
 
 
 // Define the table
-const table = sqlConnection.define(table, schemaObject, {
+const <%= service.charAt(0).toUpperCase() + service.slice(1) +'s'  %>= sqlConnection.define(table, schemaObject, {
     // Don't really delete data
     // paranoid: true,
     // define indexes here
    
-    {
+    indexes: [{
         unique: true,
         fields:['_id']
     }]
 });
 
-table.associate = function (models) {
-    // models.<%= service %>s.belongsTo(models.toPop, { foreignKey: 'toPop', sourceKey: '_id' });
-};
 
 // table.hasMany(<%= service %>s, {foreignKey: 'toPop', sourceKey: '_id'});
 
 // Adding hooks
-tableafterCreate(function(user, options) {
+<%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>.afterCreate(function(user, options) {
     // Indexing for search
     // var ourDoc = user.dataValues;
     // ourDoc.isSQL = true;
@@ -59,18 +57,8 @@ tableafterCreate(function(user, options) {
     //  .save();
 });
 
-table.search = function(string){
-    return <%= service %>s.findAll({
-        where: {
-            tags: {
-                $like: '%'+string
-            }
-        }
-    });
-};
-
-table.sync();
+<%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>.sync();
 
 
-export default table;
+export default <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>;
 
