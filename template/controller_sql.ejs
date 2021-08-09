@@ -88,7 +88,7 @@ const <%= service %>sController = <IControllers> {};
     
     const resp =   await <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>.update(data, {
         where: {
-          _id:     const id = req.params.id;
+          _id:  id
 
         }
       });
@@ -107,7 +107,7 @@ const <%= service %>sController = <IControllers> {};
 
     if(!id) throw{message:'Id parameter not found'}
 
-    const resp = await <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>..destroy({
+    const resp = await <%= service.charAt(0).toUpperCase() + service.slice(1) +'s' %>.destroy({
         where: {
           _id: id
         }
