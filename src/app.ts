@@ -121,6 +121,8 @@ const _loadRoutes = (routeFiles) => {
   // Comes with endpoint versioning
   // name file as [filename].v1.ts
   routeFiles.forEach(function (file) {
+    
+     if (file.includes("gitkeep")) return;
     currentRoute++;
     const splitFileName = file.split(".");
     if (splitFileName[0] !== "index" && splitFileName[0] !== "initialize") {
