@@ -10,8 +10,6 @@ services:
     links:
       - redis
     environment:
-      - MONGOLAB_URL=mongodb://nipek:billionaire98@lendlot-shard-00-00.umh8d.mongodb.net:27017,lendlot-shard-00-01.umh8d.mongodb.net:27017,lendlot-shard-00-02.umh8d.mongodb.net:27017/bankapi?ssl=true&replicaSet=lendlot-shard-0&authSource=admin&retryWrites=true&w=majority
-      - LOG_MONGOLAB_URL=mongodb://nipek:billionaire98@lendlot-shard-00-00.umh8d.mongodb.net:27017,lendlot-shard-00-01.umh8d.mongodb.net:27017,lendlot-shard-00-02.umh8d.mongodb.net:27017/bankapilogs?ssl=true&replicaSet=lendlot-shard-0&authSource=admin&retryWrites=true&w=majority
       - REDIS_URL=redis://redis:6379/1
     restart: always
 
@@ -23,8 +21,6 @@ services:
     links:
       - redis
     environment:
-      - MONGOLAB_URL=mongodb://nipek:billionaire98@lendlot-shard-00-00.umh8d.mongodb.net:27017,lendlot-shard-00-01.umh8d.mongodb.net:27017,lendlot-shard-00-02.umh8d.mongodb.net:27017/bankapi?ssl=true&replicaSet=lendlot-shard-0&authSource=admin&retryWrites=true&w=majority
-      - LOG_MONGOLAB_URL=mongodb://nipek:billionaire98@lendlot-shard-00-00.umh8d.mongodb.net:27017,lendlot-shard-00-01.umh8d.mongodb.net:27017,lendlot-shard-00-02.umh8d.mongodb.net:27017/bankapilogs?ssl=true&replicaSet=lendlot-shard-0&authSource=admin&retryWrites=true&w=majority
       - REDIS_URL=redis://redis:6379/1
     restart: always
 
